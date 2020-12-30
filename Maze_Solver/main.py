@@ -62,29 +62,37 @@ class Memo:
     def move_forward(self):
         current_pos = (self.start_y, self.start_x)
         fork_pos = []
-        for i in range(maze_1.size):
-            current_neigh = self.check_neigbours(current_pos[0], current_pos[1])
-            maze_1[current_pos[0], current_pos[1]] = 9
-            if 0 in current_neigh:
-                if current_neigh.count(0) > 1:
-                    fork_pos.append(current_pos)
-                move_dir = current_neigh.index(0)
-                if move_dir == 0:
-                    current_pos = (current_pos[0] - 1, current_pos[1])
-                elif move_dir == 1:
-                    current_pos = (current_pos[0] + 1, current_pos[1])
-                elif move_dir == 2:
-                    current_pos = (current_pos[0], current_pos[1] + 1)
-                elif move_dir == 3:
-                    current_pos = (current_pos[0], current_pos[1] - 1)
-            elif 3 in current_neigh:
-                print("I found the solution!")
-                print(maze_1)
-                print(f"It took me {i+1} steps in total!")
+        while True:
+            try:
+                for i in range(maze_1.size):
+                    current_neigh = self.check_neigbours(current_pos[0], current_pos[1])
+                    maze_1[current_pos[0], current_pos[1]] = 9
+                    if 0 in current_neigh:
+                        if current_neigh.count(0) > 1:
+                            fork_pos.append(current_pos)
+                        move_dir = current_neigh.index(0)
+                        if move_dir == 0:
+                            current_pos = (current_pos[0] - 1, current_pos[1])
+                        elif move_dir == 1:
+                            current_pos = (current_pos[0] + 1, current_pos[1])
+                        elif move_dir == 2:
+                            current_pos = (current_pos[0], current_pos[1] + 1)
+                        elif move_dir == 3:
+                            current_pos = (current_pos[0], current_pos[1] - 1)
+                    elif 3 in current_neigh:
+                        print("I found the solution!")
+                        print(maze_1)
+                        print(f"It took me {i+1} steps in total!")
+                        break
+                    else:
+                        current_pos = fork_pos[0]
+                        fork_pos.pop(0)
                 break
-            else:
-                current_pos = fork_pos[0]
-                fork_pos.pop(0)
+            except IndexError:
+                print(f"Could not find a solution to the maze after taking {i+1} steps!")
+                print(maze_1)
+                break
+
 
 
 print(maze_1)
